@@ -32,6 +32,8 @@ public final class CallServerInterceptor implements Interceptor{
                 out += headers.get(i).get(0) + headers.get(i).get(1) + "\r\n";
             }
             out += "\r\n";
+            if (request.getRequestBody() != null)
+                out += request.getRequestBody();
             outputStream.write(out);
             outputStream.flush();
 
@@ -59,11 +61,6 @@ public final class CallServerInterceptor implements Interceptor{
             } else {
                 throw new IllegalStateException("error");
             }
-//            System.out.println("x");
-//            while ((str = bufferedReader.readLine()) != null) {
-//                response.setBody(response.getBody() + str + "\r\n");
-//                System.out.println(str);
-//            }
         } catch (IOException e) {
             e.printStackTrace();
         }

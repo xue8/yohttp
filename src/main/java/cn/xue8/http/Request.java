@@ -14,17 +14,15 @@ import java.util.regex.Pattern;
  * @create: 2019-04-06 23:05
  **/
 public final class Request {
-    private String method;
-    private final String url;
     private final Headers headers;
     private Address address;
     private Connection connection;
+    private String requestBody;
 
     Request(Request.Builder builder) {
-        this.method = builder.method;
-        this.url = builder.url;
         this.headers = builder.headers.build();
         this.address = builder.address;
+        this.requestBody = builder.requestBody;
     }
 
     public Connection getConnection() {
@@ -47,6 +45,14 @@ public final class Request {
         headers.addHeader(name, value);
     }
 
+    public String getRequestBody() {
+        return requestBody;
+    }
+
+    public void setRequestBody(String requestBody) {
+        this.requestBody = requestBody;
+    }
+
     public Address getAddress() {
         return address;
     }
@@ -59,6 +65,7 @@ public final class Request {
         private String host;
         private int port;
         private String path;
+        private String requestBody;
 
         public Builder() {
             this.headers = new Headers.Builder();
@@ -74,6 +81,8 @@ public final class Request {
                 this.address = new Address(host, port);
                 addHeader(this.method, path + " HTTP/1.1");
                 addHeader("Host", this.url);
+                if (this.method.equals("POST") || this.method.equals("PUT"))
+                    addHeader("Content-Length", String.valueOf(requestBody.length()));
             } catch (UnknownHostException e) {
                 e.printStackTrace();
             }
@@ -82,21 +91,25 @@ public final class Request {
 
         public Builder get() {
             this.method = "GET";
+            this.requestBody = null;
             return this;
         }
 
-        public Builder post() {
+        public Builder post(String requestBody) {
             this.method = "POST";
+            this.requestBody = requestBody;
             return this;
         }
 
         public Builder delete() {
             this.method = "DELETE";
+            this.requestBody = null;
             return this;
         }
 
-        public Builder put() {
+        public Builder put(String requestBody) {
             this.method = "PUT";
+            this.requestBody = requestBody;
             return this;
         }
 
