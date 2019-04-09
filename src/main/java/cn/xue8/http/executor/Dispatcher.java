@@ -47,7 +47,7 @@ public final class Dispatcher {
     }
 
     private final class CallRunnable implements Runnable {
-        private final Chain chain;
+        private Chain chain;
 
         CallRunnable(Chain chain) {
             this.chain = chain;
@@ -56,6 +56,7 @@ public final class Dispatcher {
         public void run() {
             Response response = chain.proceed();
             chain.getCallBack().onResponse(response);
+            chain = null; //help gc
         }
     }
 

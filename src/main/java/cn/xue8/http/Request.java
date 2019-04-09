@@ -18,11 +18,17 @@ public final class Request {
     private Address address;
     private Connection connection;
     private String requestBody;
+    private final String charSet;
 
     Request(Request.Builder builder) {
         this.headers = builder.headers.build();
         this.address = builder.address;
         this.requestBody = builder.requestBody;
+        this.charSet = builder.charSet;
+    }
+
+    public String getCharSet() {
+        return charSet;
     }
 
     public Connection getConnection() {
@@ -66,6 +72,7 @@ public final class Request {
         private int port;
         private String path;
         private String requestBody;
+        private String charSet;
 
         public Builder() {
             this.headers = new Headers.Builder();
@@ -154,6 +161,11 @@ public final class Request {
             return this;
         }
 
+        public Builder charSet(String charSet) {
+            this.charSet = charSet;
+            return this;
+        }
+
         public Builder removeHeader(String name) {
             headers.remove(name);
             return this;
@@ -162,6 +174,9 @@ public final class Request {
         public Request build() {
             if (this.url == null) {
                 throw new IllegalStateException("url == null");
+            } else if (this.charSet == null){
+                this.charSet = "UTF-8";
+                return new Request(this);
             } else {
                 return new Request(this);
             }

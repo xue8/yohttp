@@ -41,6 +41,7 @@ public final class SyncCall implements Call{
         interceptors.add(new CallServerInterceptor(request));
         Chain chain = new Chain(interceptors, null);
         Response response = chain.proceed();
+        chain = null; //help gc
         return response;
     }
 

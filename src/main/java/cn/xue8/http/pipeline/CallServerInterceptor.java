@@ -4,6 +4,7 @@ import cn.xue8.http.Request;
 import cn.xue8.http.Response;
 
 import java.io.*;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -37,29 +38,65 @@ public final class CallServerInterceptor implements Interceptor{
             outputStream.write(out);
             outputStream.flush();
 
-            bufferedInputStream = new BufferedInputStream(request.getConnection().getSocket().getInputStream());
-            bufferedReader = new BufferedReader(new InputStreamReader(bufferedInputStream, "utf-8"));
-            String var1 = null;
-            boolean chunked = false;
-            int contentLenght;
-            while ((var1 = bufferedReader.readLine()) != null && !var1.equals("")) {
-                response.setHeaderInfo(response.getHeaderInfo() + var1 + "\r\n");
-                if (var1.contains("chunked"))
-                    chunked = true;
-                if (var1.contains("Content-Length"))
-                    contentLenght = Integer.valueOf(var1.replace("Content-Length", ""));
+            byte[] var5 = new byte[1500];
+            int var6 = request.getConnection().getSocket().getInputStream().read(var5);
+            int headEnd = 0;
+
+            for (int i = 0; i < var6; i++) {  // \r\n \r\n
+                if ((Byte.toString(var5[i]).toLowerCase()).equals("10"))
+                    if ((Byte.toString(var5[i-1]).toLowerCase()).equals("13"))
+                        if ((Byte.toString(var5[i-2]).toLowerCase()).equals("10"))
+                            if ((Byte.toString(var5[i-3]).toLowerCase()).equals("13")) {
+                                byte[] var7 = new byte[i];
+                                System.arraycopy(var5, 0, var7, 0, i);
+                                response.setHeaderInfo(new String(var7, request.getCharSet()));
+                                headEnd = i;
+                            }
             }
-            String var2 = null;
-            if (chunked) {
-                String var3 = null; //pre line
-                while ((var2 = bufferedReader.readLine()) != null) {
-                    if (var2.equals("") && var3.equals("0"))
-                        break;
-                    response.setBody(response.getBody() + var2 + "\r\n");
-                    var3 = var2;
+
+            byte[] var8 = new byte[var6 - headEnd];
+            System.arraycopy(var5, headEnd, var8, 0, var6 - headEnd);
+            response.setBody(new String(var8, request.getCharSet()));
+
+            if (response.getHeaderInfo() != null && response.getHeaderInfo().contains("chunked")) { //chunked type
+                int var10 = 2;
+                byte[] var9 = new byte[2000];
+                var9[0] = 1;
+                while (!Byte.toString(var9[var10]).toLowerCase().equals("10")
+                        && !Byte.toString(var9[var10 - 1]).toLowerCase().equals("13")
+                        && !Byte.toString(var9[var10 - 2]).toLowerCase().equals("0")) {
+                    var10 = request.getConnection().getSocket().getInputStream().read(var9);
+                    byte[] var11 = new byte[var10];
+                    System.arraycopy(var9, 0, var11, 0, var10);
+                    var10--;
+                    response.setBody(response.getBody() + new String(var11, request.getCharSet()));
                 }
-            } else {
-                throw new IllegalStateException("error");
+            }
+
+            if (response.getHeaderInfo() != null && response.getHeaderInfo().contains("Content-Length:")) { //Content-Length type
+                int var12 = response.getHeaderInfo().indexOf("Content-Length:");
+                String var13 = "";
+                while (response.getHeaderInfo().charAt(var12) != '\r') {
+                    var13 += response.getHeaderInfo().charAt(var12);
+                    var12++;
+                }
+                var13 = var13.replaceAll("Content-Length:", "").replaceAll(" ","");
+                int var14 = Integer.valueOf(var13);
+                var14 -= var8.length;
+                int fail = 0;
+                while (var14 > 0) {
+                    byte[] var15  = new byte[3000];
+                    if (request.getConnection().getSocket().getInputStream().available() <= 0) {
+                        fail++;
+                    }
+                    if (fail > 10)
+                        break;
+                    int var16 = request.getConnection().getSocket().getInputStream().read(var15);
+                    var14 -= var16;
+                    byte[] var17 = new byte[var16];
+                    System.arraycopy(var15, 0, var17, 0, var16);
+                    response.setBody(response.getBody() + new String(var17, request.getCharSet()));
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();
