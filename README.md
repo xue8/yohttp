@@ -1,14 +1,4 @@
 # Yohttp
-[![license](https://user-gold-cdn.xitu.io/2019/4/12/16a10ca2e67ffa39?w=278&h=20&f=svg&s=984)](https://github.com/doocs/advanced-java/blob/master/LICENSE)
-[![original](https://user-gold-cdn.xitu.io/2019/4/12/16a10ca2f3ccb249?w=105&h=20&f=svg&s=927)](https://github.com/doocs/advanced-java)
-[![open-source-organization](https://user-gold-cdn.xitu.io/2019/4/12/16a10ca5a6ebc35d?w=125&h=20&f=svg&s=925)](https://github.com/doocs/intro)
-[![reading](https://user-gold-cdn.xitu.io/2019/4/12/16a10ca2f659a83c?w=128&h=20&f=svg&s=923)](https://github.com/doocs/technical-books)
-[![leetcode](https://user-gold-cdn.xitu.io/2019/4/12/16a10ca2f0dcac21?w=154&h=20&f=svg&s=933)](https://github.com/doocs/leetcode)
-[![stars](https://user-gold-cdn.xitu.io/2019/4/12/16a10ca357eccf04?w=105&h=20&f=svg&s=913)](https://github.com/doocs/advanced-java/stargazers)
-[![forks](https://user-gold-cdn.xitu.io/2019/4/12/16a10ca4142a339d?w=105&h=20&f=svg&s=913)](https://github.com/doocs/advanced-java/network/members)
-[![help-wanted](https://user-gold-cdn.xitu.io/2019/4/12/16a10ca428b33f4d?w=105&h=20&f=svg&s=913)](https://github.com/doocs/advanced-java/labels/help%20wanted)
-[![issues](https://user-gold-cdn.xitu.io/2019/4/12/16a10ca45062cdd5?w=105&h=20&f=svg&s=913)](https://github.com/doocs/advanced-java/issues)
-[![PRs Welcome](https://user-gold-cdn.xitu.io/2019/4/12/16a10ca43ff2e5fa?w=89&h=20&f=svg&s=903)](http://makeapullrequest.com)
 
 ## Èí¼þ¼Ü¹¹
 
