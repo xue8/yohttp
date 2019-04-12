@@ -33,7 +33,7 @@ Response response = httpClient.SyncCall(request).executor();
 System.out.println(response.getBody());
 ```
 第一步新建个请求信息`Request`，填写请求的`URL`、请求方法、请求头等信息。  
-第二步新建个`YoHttp`客户端，**选择同步于请求**并将请求信息注入，执行请求。
+第二步新建个`YoHttp`客户端，**选择同步请求**并将请求信息注入，执行请求。
 
 2. 异步请求  
 ```
@@ -50,5 +50,5 @@ httpClient.AsyncCall(request).executor(new CallBack() {
 });
 ```
 第一步新建个请求信息`Request`，填写请求的`URL`、请求方法、请求头等信息。  
-第二步新建个`YoHttp`客户端，**选择异步于请求**并将请求信息注入，执行请求，当请求有响应的时候，会通过回调异步请求的`onResponse`方法来反馈响应内容。  
+第二步新建个`YoHttp`客户端，**选择异步请求**并将请求信息注入，执行请求，当请求有响应的时候，会通过回调异步请求的`onResponse`方法来反馈响应内容。  
 
