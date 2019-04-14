@@ -2,6 +2,7 @@ package cn.ddnd.yohttp.connection;
 
 import cn.ddnd.yohttp.Address;
 
+import javax.net.ssl.SSLSocketFactory;
 import java.io.IOException;
 import java.net.Socket;
 
@@ -17,7 +18,11 @@ public final class Connection {
     public Connection(Address address) {
         this.address = address;
         try {
-            this.socket = new Socket(address.getHost(), address.getIp());
+            if (address.getPort() == 443) {
+                this.socket = SSLSocketFactory.getDefault().createSocket(address.getIp(), address.getPort());
+            } else {
+                this.socket = new Socket(address.getIp(), address.getPort());
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }

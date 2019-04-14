@@ -16,8 +16,6 @@ public final class CallServerInterceptor implements Interceptor{
     @Override
     public Response proceed(Response response) {
         OutputStreamWriter outputStream;
-        BufferedInputStream bufferedInputStream;
-        BufferedReader bufferedReader;
         try {
             List<List<String>> headers = request.getHeaders().getNameAndValues();
             outputStream = new OutputStreamWriter(request.getConnection().getSocket().getOutputStream());

@@ -117,8 +117,12 @@ public final class Request {
         private void checkUrl() {
             if (url.contains("http://")) {
                 url = url.replaceAll("http://", "");
+                port = 80;
             } else if(url.contains("https://")) {
                 url = url.replaceAll("https://", "");
+                port = 443;
+            } else {
+                port = 80;
             }
             if (url.contains(":")) { //带端口
                 String[] ary = url.split(":");
@@ -128,12 +132,13 @@ public final class Request {
                     Matcher matcher = pattern.matcher(ary[1]);
                     if (matcher.find()) {
                         port = Integer.valueOf(matcher.group(0));
-
                     }
                     path = ary[1].replaceAll(String.valueOf(port), "");
+                    if (path.equals("")) {
+                        path = "/";
+                    }
                 }
             } else {  //不带端口
-                port = 80;
                 if (url.contains("/")) {
                     Pattern pattern = Pattern.compile("/.*");
                     Matcher matcher = pattern.matcher(url);

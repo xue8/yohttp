@@ -1,33 +1,33 @@
 package cn.ddnd.yohttp;
 
 public final class Address {
-    private final String host;
-    private final int ip;
+    private final String ip;
+    private final int port;
 
-    public Address(String host, int ip) {
-        this.host = host;
+    public Address(String ip, int port) {
         this.ip = ip;
+        this.port = port;
     }
 
-    public String getHost() {
-        return host;
-    }
-
-    public int getIp() {
+    public String getIp() {
         return ip;
+    }
+
+    public int getPort() {
+        return port;
     }
 
     @Override
     public int hashCode() {
-        long code = Long.valueOf(host.replaceAll("\\.", "")) + ip;
-        code = code / ip;
+        long code = Long.valueOf(ip.replaceAll("\\.", "")) + port;
+        code = code / port;
         return (int)code;
     }
 
     @Override
     public boolean equals(Object obj) {
         Address address = (Address) obj;
-        if (address.host.equals(this.host) && address.ip == ip) {
+        if (address.ip.equals(this.ip) && address.port == port) {
             return true;
         } else {
             return false;
