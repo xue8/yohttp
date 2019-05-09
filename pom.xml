@@ -35,6 +35,14 @@
         </developer>
     </developers>
 
+    <dependencies>
+        <!-- https://mvnrepository.com/artifact/redis.clients/jedis -->
+        <dependency>
+            <groupId>redis.clients</groupId>
+            <artifactId>jedis</artifactId>
+            <version>3.1.0-m1</version>
+        </dependency>
+    </dependencies>
     <scm>
         <connection>scm:git:git:https://github.com/xue8/yohttp.git</connection>
         <developerConnection>scm:git:git:https://github.com/xue8/yohttp.git</developerConnection>

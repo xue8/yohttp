@@ -42,12 +42,20 @@ public final class CallServerInterceptor implements Interceptor{
                                 System.arraycopy(var5, 0, var7, 0, i);
                                 response.setHeaderInfo(new String(var7, request.getCharSet()));
                                 headEnd = i;
+                                break;
                             }
             }
 
             byte[] var8 = new byte[var6 - headEnd];
             System.arraycopy(var5, headEnd, var8, 0, var6 - headEnd);
             response.setBody(new String(var8, request.getCharSet()));
+
+            if (response.getBody().charAt(response.getBody().length() - 1) == '\n'
+                    && response.getBody().charAt(response.getBody().length() - 2) == '\r'
+                    && response.getBody().charAt(response.getBody().length() - 3) == '\n'
+                    && response.getBody().charAt(response.getBody().length() - 4) == '\r'
+                    && response.getBody().charAt(response.getBody().length() - 5) == '0')
+                return response;
 
             if (response.getHeaderInfo() != null && response.getHeaderInfo().contains("chunked")) { //chunked type
                 int var10 = 2;
