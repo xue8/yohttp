@@ -66,7 +66,12 @@ public final class Dispatcher {
         }
 
         public Chain pollChain() {
-            return queue.poll();
+            try {
+                return queue.take();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            return null;
         }
 
         public int size() {
