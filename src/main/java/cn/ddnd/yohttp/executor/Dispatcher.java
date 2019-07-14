@@ -12,7 +12,7 @@ public final class Dispatcher {
     public Dispatcher() {
         chainQueue = new ChainQueue();
         threadPoolExecutor = new ThreadPoolExecutor(0,
-                5,
+                Runtime.getRuntime().availableProcessors() * 2,
                 60,
                 TimeUnit.SECONDS,
                 new LinkedBlockingQueue<>(10),
