@@ -3,18 +3,22 @@ package cn.ddnd.yohttp.executor;
 import cn.ddnd.yohttp.Response;
 import cn.ddnd.yohttp.pipeline.Chain;
 
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.LinkedBlockingDeque;
+import java.util.concurrent.*;
 
 public final class Dispatcher {
     private final ChainQueue chainQueue;
-    private final ExecutorService executorService;
+    private final ThreadPoolExecutor threadPoolExecutor;
 
     public Dispatcher() {
         chainQueue = new ChainQueue();
-        executorService = Executors.newCachedThreadPool();
+        threadPoolExecutor = new ThreadPoolExecutor(0,
+                5,
+                60,
+                TimeUnit.SECONDS,
+                new LinkedBlockingQueue<>(10),
+                Executors.defaultThreadFactory(),
+                new ThreadPoolExecutor.CallerRunsPolicy()
+        );
         this.executor();
     }
 
@@ -32,7 +36,7 @@ public final class Dispatcher {
             public void run() {
                 while (true) {
                     while (chainQueue.size() > 0) {
-                        executorService.submit(new CallRunnable(chainQueue.pollChain()));
+                        threadPoolExecutor.submit(new CallRunnable(chainQueue.pollChain()));
                     }
                 }
             }
